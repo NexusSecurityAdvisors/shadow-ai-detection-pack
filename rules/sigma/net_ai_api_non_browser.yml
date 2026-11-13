@@ -1,0 +1,41 @@
+title: Non-Browser Process Connecting to Generative AI API
+id: 4f6c1a2e-8b3d-4c5e-9a71-2d0e6b9f1a05
+status: experimental
+description: |
+  Detects processes other than web browsers connecting to AI provider APIs.
+  Finds scripts, desktop apps, IDE plugins and agents that hold API keys and
+  send data directly, bypassing browser-based controls.
+author: Dan Sorensen (Nexus Security Advisors)
+date: 2026-11-13
+tags:
+  - attack.exfiltration
+  - attack.t1567
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    Initiated: 'true'
+    DestinationHostname|endswith:
+      - 'api.openai.com'
+      - 'api.anthropic.com'
+      - 'generativelanguage.googleapis.com'
+      - 'api.deepseek.com'
+      - 'api.mistral.ai'
+      - 'api.x.ai'
+      - 'api.groq.com'
+      - 'api.together.xyz'
+      - 'openrouter.ai'
+      - 'api.fireworks.ai'
+      - 'api.cohere.com'
+  filter_browsers:
+    Image|endswith:
+      - '\chrome.exe'
+      - '\msedge.exe'
+      - '\firefox.exe'
+      - '\brave.exe'
+      - '\opera.exe'
+  condition: selection and not filter_browsers
+falsepositives:
+  - Approved applications and IDE assistants. Allow-list by Image and signer.
+level: medium

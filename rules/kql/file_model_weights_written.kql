@@ -1,0 +1,2 @@
+DeviceFileEvents
+| where FolderPath endswith ".gguf" or FolderPath endswith ".ggml"

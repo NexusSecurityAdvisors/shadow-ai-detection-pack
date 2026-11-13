@@ -1,0 +1,60 @@
+title: DNS Lookup of Generative AI Service
+id: 4f6c1a2e-8b3d-4c5e-9a71-2d0e6b9f1a01
+status: experimental
+description: |
+  Detects DNS queries for common generative AI chat, API, coding-assistant and
+  note-taker services. Intended for baselining shadow AI use, not for alerting
+  on its own. Pair with the triage rubric and filter out sanctioned services.
+references:
+  - https://genai.owasp.org/llm-top-10/
+author: Dan Sorensen (Nexus Security Advisors)
+date: 2026-11-13
+tags:
+  - attack.exfiltration
+  - detection.threat-hunting
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection_chat:
+    QueryName|endswith:
+      - 'chatgpt.com'
+      - 'chat.openai.com'
+      - 'claude.ai'
+      - 'gemini.google.com'
+      - 'aistudio.google.com'
+      - 'notebooklm.google.com'
+      - 'copilot.microsoft.com'
+      - 'chat.deepseek.com'
+      - 'perplexity.ai'
+      - 'chat.mistral.ai'
+      - 'poe.com'
+      - 'grok.com'
+      - 'meta.ai'
+      - 'character.ai'
+      - 'chat.qwen.ai'
+  selection_api:
+    QueryName|endswith:
+      - 'api.openai.com'
+      - 'api.anthropic.com'
+      - 'generativelanguage.googleapis.com'
+      - 'api.deepseek.com'
+      - 'api.mistral.ai'
+      - 'api.x.ai'
+      - 'api.groq.com'
+      - 'api.together.xyz'
+      - 'openrouter.ai'
+      - 'api.fireworks.ai'
+      - 'api.cohere.com'
+  selection_notetaker:
+    QueryName|endswith:
+      - 'otter.ai'
+      - 'fireflies.ai'
+      - 'fathom.video'
+      - 'read.ai'
+      - 'tldv.io'
+  condition: 1 of selection_*
+falsepositives:
+  - Sanctioned AI services. Remove them from the selections or add an allow-list filter.
+  - Browser prefetch and link previews in chat and email clients.
+level: informational

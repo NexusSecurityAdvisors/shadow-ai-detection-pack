@@ -1,0 +1,18 @@
+// Large uploads to generative AI services (Microsoft Sentinel, CommonSecurityLog / CEF proxy data)
+// Hand-written: pySigma's Defender XDR pipeline has no table for the proxy category.
+// Field names follow CEF. Adjust for your proxy's connector (Zscaler, Netskope, Palo Alto, Squid).
+let ai_hosts = dynamic([
+  "chatgpt.com","claude.ai","gemini.google.com","notebooklm.google.com","copilot.microsoft.com",
+  "chat.deepseek.com","perplexity.ai","chat.mistral.ai","poe.com","grok.com",
+  "api.openai.com","api.anthropic.com","generativelanguage.googleapis.com","api.deepseek.com"
+]);
+let min_bytes = 1000000;   // tune: 1 MB catches documents; lower it to catch long pastes
+CommonSecurityLog
+| where TimeGenerated > ago(30d)
+| where RequestMethod in ("POST", "PUT")
+| extend Host = tolower(coalesce(DestinationHostName, tostring(parse_url(RequestURL).Host)))
+| where Host has_any (ai_hosts)
+| where SentBytes >= min_bytes
+| summarize Uploads = count(), TotalMB = round(sum(SentBytes) / 1048576.0, 1), LargestMB = round(max(SentBytes) / 1048576.0, 1)
+    by SourceUserName, SourceIP, Host
+| order by TotalMB desc
