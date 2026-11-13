@@ -1,0 +1,1 @@
+Image IN ("*\\ollama.exe", "*\\ollama app.exe", "*\\LM Studio.exe", "*\\lms.exe", "*\\llama-server.exe", "*\\llama-cli.exe", "*\\koboldcpp.exe", "*\\Jan.exe") OR CommandLine IN ("*ollama serve*", "*ollama run *", "*ollama pull *", "*llama-server *", "*lms server start*")

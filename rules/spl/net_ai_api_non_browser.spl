@@ -1,0 +1,1 @@
+Initiated="true" DestinationHostname IN ("*api.openai.com", "*api.anthropic.com", "*generativelanguage.googleapis.com", "*api.deepseek.com", "*api.mistral.ai", "*api.x.ai", "*api.groq.com", "*api.together.xyz", "*openrouter.ai", "*api.fireworks.ai", "*api.cohere.com") NOT (Image IN ("*\\chrome.exe", "*\\msedge.exe", "*\\firefox.exe", "*\\brave.exe", "*\\opera.exe"))

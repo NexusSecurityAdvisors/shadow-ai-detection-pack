@@ -1,0 +1,38 @@
+title: Local LLM Runtime Started
+id: 4f6c1a2e-8b3d-4c5e-9a71-2d0e6b9f1a04
+status: experimental
+description: |
+  Detects common local model runtimes starting on an endpoint. Local models
+  keep data on the device, which can be good, but they are unmanaged software
+  that downloads large binaries, opens local listening ports (Ollama 11434,
+  LM Studio 1234, llama.cpp server 8080 by default) and may run unvetted models.
+author: Dan Sorensen (Nexus Security Advisors)
+date: 2026-11-13
+tags:
+  - attack.execution
+  - detection.threat-hunting
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith:
+      - '\ollama.exe'
+      - '\ollama app.exe'
+      - '\LM Studio.exe'
+      - '\lms.exe'
+      - '\llama-server.exe'
+      - '\llama-cli.exe'
+      - '\koboldcpp.exe'
+      - '\Jan.exe'
+  selection_cli:
+    CommandLine|contains:
+      - 'ollama serve'
+      - 'ollama run '
+      - 'ollama pull '
+      - 'llama-server '
+      - 'lms server start'
+  condition: 1 of selection_*
+falsepositives:
+  - Approved developer and data science workstations.
+level: low

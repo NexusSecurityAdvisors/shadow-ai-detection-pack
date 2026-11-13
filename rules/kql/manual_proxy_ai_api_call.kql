@@ -1,0 +1,15 @@
+// Direct calls to AI provider APIs through the proxy (Microsoft Sentinel, CommonSecurityLog)
+// Each distinct source is an integration (script, app, agent) that belongs in the AI inventory.
+let ai_api_hosts = dynamic([
+  "api.openai.com","api.anthropic.com","generativelanguage.googleapis.com","api.deepseek.com",
+  "api.mistral.ai","api.x.ai","api.groq.com","api.together.xyz","openrouter.ai",
+  "api.fireworks.ai","api.cohere.com","api.perplexity.ai"
+]);
+CommonSecurityLog
+| where TimeGenerated > ago(30d)
+| extend Host = tolower(coalesce(DestinationHostName, tostring(parse_url(RequestURL).Host)))
+| where Host in (ai_api_hosts)
+| summarize Requests = count(), FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated),
+    UserAgents = make_set(RequestClientApplication, 5)
+    by SourceIP, SourceUserName, Host
+| order by Requests desc

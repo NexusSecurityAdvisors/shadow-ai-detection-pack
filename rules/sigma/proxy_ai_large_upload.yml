@@ -1,0 +1,45 @@
+title: Large Upload to Generative AI Service
+id: 4f6c1a2e-8b3d-4c5e-9a71-2d0e6b9f1a02
+status: experimental
+description: |
+  Detects HTTP POST or PUT requests with large bodies sent to generative AI
+  chat services or APIs. Large uploads usually mean a document, spreadsheet,
+  code archive or long paste. This is the highest-value shadow AI signal for
+  data exposure. Tune the byte threshold to your proxy's field semantics.
+references:
+  - https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/
+author: Dan Sorensen (Nexus Security Advisors)
+date: 2026-11-13
+tags:
+  - attack.exfiltration
+  - attack.t1567
+logsource:
+  category: proxy
+detection:
+  selection_host:
+    cs-host|endswith:
+      - 'chatgpt.com'
+      - 'claude.ai'
+      - 'gemini.google.com'
+      - 'notebooklm.google.com'
+      - 'copilot.microsoft.com'
+      - 'chat.deepseek.com'
+      - 'perplexity.ai'
+      - 'chat.mistral.ai'
+      - 'poe.com'
+      - 'grok.com'
+      - 'api.openai.com'
+      - 'api.anthropic.com'
+      - 'generativelanguage.googleapis.com'
+      - 'api.deepseek.com'
+  selection_method:
+    cs-method:
+      - 'POST'
+      - 'PUT'
+  selection_size:
+    cs-bytes|gte: 1000000
+  condition: all of selection_*
+falsepositives:
+  - Sanctioned enterprise AI tenants receiving approved documents.
+  - Image and audio uploads to approved multimodal tools.
+level: medium

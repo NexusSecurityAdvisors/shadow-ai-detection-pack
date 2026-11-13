@@ -1,0 +1,23 @@
+title: Local Model Weight File Written
+id: 4f6c1a2e-8b3d-4c5e-9a71-2d0e6b9f1a06
+status: experimental
+description: |
+  Detects GGUF and GGML model files written to disk, the formats used by most
+  local runtimes. Model files are large (often several GB) and their presence
+  indicates local model use even when the runtime is renamed or portable.
+author: Dan Sorensen (Nexus Security Advisors)
+date: 2026-11-13
+tags:
+  - detection.threat-hunting
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    TargetFilename|endswith:
+      - '.gguf'
+      - '.ggml'
+  condition: selection
+falsepositives:
+  - Approved ML workstations.
+level: low

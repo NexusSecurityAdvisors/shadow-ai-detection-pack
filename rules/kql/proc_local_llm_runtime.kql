@@ -1,0 +1,2 @@
+DeviceProcessEvents
+| where (FolderPath endswith "\\ollama.exe" or FolderPath endswith "\\ollama app.exe" or FolderPath endswith "\\LM Studio.exe" or FolderPath endswith "\\lms.exe" or FolderPath endswith "\\llama-server.exe" or FolderPath endswith "\\llama-cli.exe" or FolderPath endswith "\\koboldcpp.exe" or FolderPath endswith "\\Jan.exe") or (ProcessCommandLine contains "ollama serve" or ProcessCommandLine contains "ollama run " or ProcessCommandLine contains "ollama pull " or ProcessCommandLine contains "llama-server " or ProcessCommandLine contains "lms server start")

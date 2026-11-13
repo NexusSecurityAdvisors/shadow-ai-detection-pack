@@ -1,0 +1,40 @@
+domain,match,category,vendor,notes
+chatgpt.com,suffix,chat,OpenAI,
+chat.openai.com,exact,chat,OpenAI,legacy ChatGPT host
+api.openai.com,exact,api,OpenAI,
+claude.ai,suffix,chat,Anthropic,
+api.anthropic.com,exact,api,Anthropic,
+gemini.google.com,exact,chat,Google,
+aistudio.google.com,exact,chat,Google,
+notebooklm.google.com,exact,chat,Google,accepts document uploads
+generativelanguage.googleapis.com,exact,api,Google,Gemini API
+copilot.microsoft.com,exact,chat,Microsoft,consumer Copilot; Microsoft 365 Copilot runs inside tenant apps
+openai.azure.com,suffix,api,Microsoft,Azure OpenAI; may be sanctioned
+chat.deepseek.com,exact,chat,DeepSeek,
+api.deepseek.com,exact,api,DeepSeek,
+perplexity.ai,suffix,chat,Perplexity,
+api.perplexity.ai,exact,api,Perplexity,
+chat.mistral.ai,exact,chat,Mistral AI,
+api.mistral.ai,exact,api,Mistral AI,
+poe.com,suffix,chat,Quora,
+grok.com,suffix,chat,xAI,
+api.x.ai,exact,api,xAI,
+meta.ai,suffix,chat,Meta,
+character.ai,suffix,chat,Character.AI,
+chat.qwen.ai,exact,chat,Alibaba,
+api.groq.com,exact,api,Groq,
+api.together.xyz,exact,api,Together AI,
+openrouter.ai,suffix,api,OpenRouter,multi-model router
+api.fireworks.ai,exact,api,Fireworks AI,
+api.cohere.com,exact,api,Cohere,
+huggingface.co,suffix,model_hub,Hugging Face,model downloads and hosted inference
+hf.co,suffix,model_hub,Hugging Face,short domain
+api.githubcopilot.com,exact,coding,GitHub,may be sanctioned
+copilot-proxy.githubusercontent.com,exact,coding,GitHub,may be sanctioned
+api2.cursor.sh,exact,coding,Anysphere (Cursor),
+server.codeium.com,exact,coding,Codeium / Windsurf,
+otter.ai,suffix,note_taker,Otter.ai,
+fireflies.ai,suffix,note_taker,Fireflies.ai,
+fathom.video,suffix,note_taker,Fathom,
+read.ai,suffix,note_taker,Read AI,
+tldv.io,suffix,note_taker,tl;dv,

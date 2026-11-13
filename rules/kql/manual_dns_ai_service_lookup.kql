@@ -1,0 +1,23 @@
+// DNS lookups of generative AI services (Microsoft Defender XDR, Advanced Hunting)
+// Hand-written: pySigma's Defender XDR pipeline has no table for the dns_query category.
+// Baseline query. Run over 30 days, then remove sanctioned services.
+let ai_domains = dynamic([
+  "chatgpt.com","chat.openai.com","claude.ai","gemini.google.com","aistudio.google.com",
+  "notebooklm.google.com","copilot.microsoft.com","chat.deepseek.com","perplexity.ai",
+  "chat.mistral.ai","poe.com","grok.com","meta.ai","character.ai","chat.qwen.ai",
+  "api.openai.com","api.anthropic.com","generativelanguage.googleapis.com","api.deepseek.com",
+  "api.mistral.ai","api.x.ai","api.groq.com","api.together.xyz","openrouter.ai",
+  "api.fireworks.ai","api.cohere.com","otter.ai","fireflies.ai","fathom.video","read.ai","tldv.io"
+]);
+DeviceEvents
+| where Timestamp > ago(30d)
+| where ActionType == "DnsQueryResponse"
+| extend QueryName = tolower(tostring(parse_json(AdditionalFields).DnsQueryString))
+| where isnotempty(QueryName)
+| mv-apply d = ai_domains to typeof(string) on (
+    where QueryName == d or QueryName endswith strcat(".", d)
+    | project MatchedService = d
+  )
+| summarize Lookups = count(), Devices = dcount(DeviceId), FirstSeen = min(Timestamp), LastSeen = max(Timestamp)
+    by MatchedService, InitiatingProcessFileName
+| order by Devices desc

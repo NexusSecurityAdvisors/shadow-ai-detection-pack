@@ -1,0 +1,1 @@
+"cs-host" IN ("*chatgpt.com", "*claude.ai", "*gemini.google.com", "*notebooklm.google.com", "*copilot.microsoft.com", "*chat.deepseek.com", "*perplexity.ai", "*chat.mistral.ai", "*poe.com", "*grok.com", "*api.openai.com", "*api.anthropic.com", "*generativelanguage.googleapis.com", "*api.deepseek.com") "cs-method" IN ("POST", "PUT") "cs-bytes">=1000000

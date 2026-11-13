@@ -1,0 +1,36 @@
+title: Direct Call to Generative AI Provider API
+id: 4f6c1a2e-8b3d-4c5e-9a71-2d0e6b9f1a03
+status: experimental
+description: |
+  Detects requests to AI provider API endpoints through the web proxy. Web-UI
+  use goes to the chat hosts; API use usually means a script, an internal tool,
+  an agent or a third-party app holding an API key. Each distinct source is an
+  integration that should be in your AI inventory.
+references:
+  - https://genai.owasp.org/llmrisk/llm062025-excessive-agency/
+author: Dan Sorensen (Nexus Security Advisors)
+date: 2026-11-13
+tags:
+  - attack.exfiltration
+  - attack.t1567
+logsource:
+  category: proxy
+detection:
+  selection:
+    cs-host:
+      - 'api.openai.com'
+      - 'api.anthropic.com'
+      - 'generativelanguage.googleapis.com'
+      - 'api.deepseek.com'
+      - 'api.mistral.ai'
+      - 'api.x.ai'
+      - 'api.groq.com'
+      - 'api.together.xyz'
+      - 'openrouter.ai'
+      - 'api.fireworks.ai'
+      - 'api.cohere.com'
+      - 'api.perplexity.ai'
+  condition: selection
+falsepositives:
+  - Approved internal applications. Allow-list by source host or service account.
+level: low
